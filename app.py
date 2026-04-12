@@ -123,9 +123,11 @@ with col2:
 with col3:
     diff = pat_compra - pat_aluguel
     if diff > 0:
-        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        perc = (pat_compra/pat_aluguel) * 100
+        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
-        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        perc = (pat_aluguel/pat_compra) * 100
+        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
