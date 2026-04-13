@@ -138,14 +138,16 @@ if cx_compra < 0 or cx_aluguel < 0:
 st.subheader("Rendimento Mensal Final (Mês 420)")
 col4, col5, col6 = st.columns(3)
 
+taxa_rendimento = 0.005
+
 with col4:
     montante_investido_compra = pat_compra - val_imovel
-    rendimento_compra = montante_investido_compra * 0.01
+    rendimento_compra = montante_investido_compra * taxa_rendimento
     st.metric("Rendimento Mensal: COMPRA", f"R$ {rendimento_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     
 with col5:
     montante_investido_aluguel = pat_aluguel
-    rendimento_aluguel = montante_investido_aluguel * 0.01
+    rendimento_aluguel = montante_investido_aluguel * taxa_rendimento
     st.metric("Rendimento Mensal: ALUGUEL", f"R$ {rendimento_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col6:
