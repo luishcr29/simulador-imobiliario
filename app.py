@@ -132,7 +132,7 @@ with col3:
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
 
-# st.divider()
+st.divider()
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
