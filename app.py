@@ -132,6 +132,31 @@ with col3:
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
 
+# st.divider()
+
+# Rendimento Mensal Final
+st.subheader("Rendimento Mensal Final (Mês 420)")
+col4, col5, col6 = st.columns(3)
+
+with col4:
+    montante_investido_compra = pat_compra - valor_final_imovel
+    rendimento_compra = montante_investido_compra * 0.01
+    st.metric("Rendimento Mensal: COMPRA", f"R$ {rendimento_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    
+with col5:
+    montante_investido_aluguel = pat_aluguel
+    rendimento_aluguel = montante_investido_aluguel * 0.01
+    st.metric("Rendimento Mensal: ALUGUEL", f"R$ {rendimento_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col6:
+    diff = rendimento_compra - rendimento_aluguel
+    if diff > 0:
+        perc = (abs(diff)/rendimento_aluguel) * 100
+        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+    else:
+        perc = (abs(diff)/rendimento_compra) * 100
+        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+
 st.divider()
 
 # Gráfico
