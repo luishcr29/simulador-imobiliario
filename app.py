@@ -132,14 +132,14 @@ with col3:
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
 
-st.divider()
+# st.divider()
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
 col4, col5, col6 = st.columns(3)
 
 with col4:
-    montante_investido_compra = pat_compra - valor_final_imovel
+    montante_investido_compra = pat_compra - val_imovel
     rendimento_compra = montante_investido_compra * 0.01
     st.metric("Rendimento Mensal: COMPRA", f"R$ {rendimento_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     
