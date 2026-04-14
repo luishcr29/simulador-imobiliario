@@ -183,12 +183,15 @@ with col9:
         st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Aluguel Final 
-st.subheader("Aluguel Esperado (Mês 420)")
-col10 = st.columns(1)
+st.subheader("Valor Final do Imóvel e Aluguel Esperado (Mês 420)")
+col10, col11 = st.columns(2)
 
 with col10:
+    st.metric("Valor do Imóvel:", f"R$ {val_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col11:
     ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
-    st.metric("Aluguel Esperado:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    st.metric("Aluguel:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.divider()
 
