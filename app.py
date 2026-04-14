@@ -31,6 +31,9 @@ with st.sidebar.expander("4. Orçamento e Déficit", expanded=True):
     reajuste_orcamento_aa = st.number_input("Reajuste anual do orçamento (% a.a.)", value=3.0, step=0.5)
     taxa_divida_aa = st.number_input("Taxa de dívida/Cheque Especial (% a.a.)", value=40.0, step=1.0)
 
+with st.sidebar.expander("5. Viver de Renda", expanded=True):
+    tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal", value=0.005, step=0.001)
+
 # --- MOTOR DE CÁLCULO ---
 @st.cache_data
 def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa, 
@@ -106,6 +109,10 @@ df_resultados, pat_compra, pat_aluguel, val_imovel, cx_compra, cx_aluguel = calc
     orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa
 )
 
+# Pagamento Total
+pag_total_aluguel = df_resultados['Aluguel (R$)'].sum()
+pag_total_compra = df_resultados['Parcela Financiamento (R$)'].sum()
+
 # --- INTERFACE DE RESULTADOS ---
 
 # Patrimônio
@@ -139,11 +146,9 @@ st.subheader("Total de Pagamento Realizado (Mês 420)")
 col4, col5, col6 = st.columns(3)
 
 with col4:
-    pag_total_compra = df_resultados['Parcela Financiamento (R$)'].sum()
     st.metric("Pagamento Total: COMPRA", f"R$ {pag_total_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col5:
-    pag_total_aluguel = df_resultados['Aluguel (R$)'].sum()
     st.metric("Pagamento Total: ALUGUEL", f"R$ {pag_total_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col6:
@@ -159,14 +164,12 @@ with col6:
 st.subheader("Rendimento Mensal Final (Mês 420)")
 col7, col8, col9, col10 = st.columns(4)
 
-taxa_rendimento = 0.005
-
 with col7:
-    rendimento_compra = (pat_compra - val_imovel) * taxa_rendimento
+    rendimento_compra = (pat_compra - val_imovel) * tx_renda_passiva_am
     st.metric("Rendimento Mensal: COMPRA", f"R$ {rendimento_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     
 with col8:
-    rendimento_aluguel = pat_aluguel * taxa_rendimento
+    rendimento_aluguel = pat_aluguel * tx_renda_passiva_am
     st.metric("Rendimento Mensal: ALUGUEL", f"R$ {rendimento_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col9:
