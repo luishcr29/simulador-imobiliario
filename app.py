@@ -114,6 +114,8 @@ df_resultados, pat_compra, pat_aluguel, val_imovel, cx_compra, cx_aluguel = calc
 pag_total_aluguel = df_resultados['Aluguel (R$)'].sum()
 pag_total_compra = df_resultados['Parcela Financiamento (R$)'].sum()
 
+ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
+
 # --- INTERFACE DE RESULTADOS ---
 
 # Patrimônio
@@ -133,11 +135,11 @@ with col2:
 with col3:
     diff = pat_compra - pat_aluguel
     if diff > 0:
-        perc = (abs(diff)/pat_aluguel) * 100
-        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        porcent = (abs(diff)/pat_aluguel) * 100
+        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
-        perc = (abs(diff)/pat_compra) * 100
-        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        porcent = (abs(diff)/pat_compra) * 100
+        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
@@ -155,11 +157,11 @@ with col5:
 with col6:
     diff = pag_total_aluguel - pag_total_compra
     if diff > 0:
-        perc = (abs(diff)/pag_total_aluguel) * 100
-        st.success(f"🏆 COMPRAR pagou menos R$ {abs(diff):,.2f} ({perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        porcent = (abs(diff)/pag_total_aluguel) * 100
+        st.success(f"🏆 COMPRAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
-        perc = (abs(diff)/pag_total_compra) * 100
-        st.info(f"🏆 ALUGAR pagou menos R$ {abs(diff):,.2f} ({perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        porcent = (abs(diff)/pag_total_compra) * 100
+        st.info(f"🏆 ALUGAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
@@ -176,22 +178,29 @@ with col8:
 with col9:
     diff = rendimento_compra - rendimento_aluguel
     if diff > 0:
-        perc = (abs(diff)/rendimento_aluguel) * 100
-        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        porcent = (abs(diff)/rendimento_aluguel) * 100
+        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
-        perc = (abs(diff)/rendimento_compra) * 100
-        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        porcent = (abs(diff)/rendimento_compra) * 100
+        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Aluguel Final 
 st.subheader("Valor Final do Imóvel e Aluguel Esperado (Mês 420)")
-col10, col11 = st.columns(2)
+col10, col11, col12 = st.columns(3)
 
 with col10:
     st.metric("Valor do Imóvel:", f"R$ {val_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col11:
-    ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
     st.metric("Aluguel:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col12:
+    diff = rendimento_aluguel - rendimento_compra - ultimo_aluguel
+    if diff < 0:
+        st.success(f"A diferença de rendimentos não paga o aluguel e falta R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    else:
+        porcent = (abs(diff)/rendimento_compra) * 100
+        st.info(f"A diferença de rendimentos paga o aluguel e sobra R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.divider()
 
