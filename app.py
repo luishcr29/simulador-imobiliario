@@ -14,25 +14,26 @@ with st.sidebar.expander("1. Imóvel e Financiamento", expanded=True):
     entrada = st.number_input("Valor da entrada (R$)", value=126833.23, step=1000.0)
     prazo = st.number_input("Prazo (meses)", value=420, step=12)
     juros_aa = st.number_input("Taxa nominal financiamento (% a.a.)", value=8.16, step=0.1)
-    valorizacao_aa = st.number_input("Valorização anual imóvel (% a.a.)", value=4.5, step=0.5)
+    valorizacao_aa = st.number_input("Valorização anual imóvel (% a.a.)", value=6.0, step=0.5)
 
-with st.sidebar.expander("2. Seguros e Tarifas (Caixa)", expanded=True):
+with st.sidebar.expander("2. Seguros e Tarifas (Caixa)", expanded=False):
     mip_inicial = st.number_input("MIP na 1ª parcela (R$)", value=24.04, step=1.0)
     dfi_inicial = st.number_input("DFI na 1ª parcela (R$)", value=24.85, step=1.0)
     taxa_admin = st.number_input("Taxa de Administração (R$)", value=25.00, step=1.0)
 
 with st.sidebar.expander("3. Investimento e Aluguel", expanded=True):
-    rendimento_aa = st.number_input("Rendimento investimentos (% a.a.)", value=12.5, step=0.5)
-    aluguel_inicial = st.number_input("Aluguel inicial (R$)", value=1500.0, step=100.0)
-    reajuste_aluguel_aa = st.number_input("Reajuste anual do aluguel (% a.a.)", value=5.5, step=0.5)
+    rendimento_aa = st.number_input("Rendimento investimentos (% a.a.)", value=15.0, step=0.5)
+    aluguel_inicial = st.number_input("Aluguel inicial (R$)", value=1800.0, step=100.0)
+    reajuste_aluguel_aa = st.number_input("Reajuste anual do aluguel (% a.a.)", value=6.0, step=0.5)
 
 with st.sidebar.expander("4. Orçamento e Déficit", expanded=True):
-    orcamento_mensal = st.number_input("Orçamento fixo mensal inicial (R$)", value=2500.0, step=100.0)
+    orcamento_mensal = st.number_input("Orçamento fixo mensal inicial (R$)", value=3500.0, step=100.0)
     reajuste_orcamento_aa = st.number_input("Reajuste anual do orçamento (% a.a.)", value=3.0, step=0.5)
     taxa_divida_aa = st.number_input("Taxa de dívida/Cheque Especial (% a.a.)", value=40.0, step=1.0)
 
 with st.sidebar.expander("5. Viver de Renda", expanded=True):
-    tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal", value=0.005, step=0.001)
+    tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal (% a.m.)", value=0.5, step=0.1)
+    tx_renda_passiva_am /= 100
 
 # --- MOTOR DE CÁLCULO ---
 @st.cache_data
@@ -155,14 +156,14 @@ with col6:
     diff = pag_total_aluguel - pag_total_compra
     if diff > 0:
         perc = (abs(diff)/pag_total_aluguel) * 100
-        st.success(f"🏆 COMPRAR pagou menos R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"🏆 COMPRAR pagou menos R$ {abs(diff):,.2f} ({perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         perc = (abs(diff)/pag_total_compra) * 100
-        st.info(f"🏆 ALUGAR pagou menos R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"🏆 ALUGAR pagou menos R$ {abs(diff):,.2f} ({perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
-col7, col8, col9, col10 = st.columns(4)
+col7, col8, col9 = st.columns(3)
 
 with col7:
     rendimento_compra = (pat_compra - val_imovel) * tx_renda_passiva_am
@@ -173,10 +174,6 @@ with col8:
     st.metric("Rendimento Mensal: ALUGUEL", f"R$ {rendimento_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col9:
-    ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
-    st.metric("Aluguel Esperado:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
-
-with col10:
     diff = rendimento_compra - rendimento_aluguel
     if diff > 0:
         perc = (abs(diff)/rendimento_aluguel) * 100
@@ -184,6 +181,14 @@ with col10:
     else:
         perc = (abs(diff)/rendimento_compra) * 100
         st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+
+# Aluguel Final 
+st.subheader("Aluguel Esperado (Mês 420)")
+col0 = st.columns(1)
+
+with col10:
+    ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
+    st.metric("Aluguel Esperado:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 st.divider()
 
