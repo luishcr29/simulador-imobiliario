@@ -208,10 +208,10 @@ with col11:
 with col12:
     diff = rendimento_aluguel - rendimento_compra - ultimo_aluguel
     if diff < 0:
-        st.success(f"✅ ALUGAR não rende o suficiente para pagar o aluguel, faltando R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ ALUGAR não rende o suficiente para pagar o aluguel e cobrir o rendimento do rendimento de COMPRAR, faltando R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/rendimento_compra) * 100
-        st.info(f"✅ ALUGAR rende o suficiente para pagar o aluguel, sobrando R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ ALUGAR rende o suficiente para pagar o aluguel e cobrir o rendimento do rendimento de COMPRAR, sobrando R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.divider()
 
