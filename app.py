@@ -136,10 +136,10 @@ with col3:
     diff = pat_compra - pat_aluguel
     if diff > 0:
         porcent = (abs(diff)/pat_aluguel) * 100
-        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ COMPRAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/pat_compra) * 100
-        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
@@ -158,10 +158,10 @@ with col6:
     diff = pag_total_aluguel - pag_total_compra
     if diff > 0:
         porcent = (abs(diff)/pag_total_aluguel) * 100
-        st.success(f"🏆 COMPRAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ COMPRAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/pag_total_compra) * 100
-        st.info(f"🏆 ALUGAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ ALUGAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
@@ -179,10 +179,10 @@ with col9:
     diff = rendimento_compra - rendimento_aluguel
     if diff > 0:
         porcent = (abs(diff)/rendimento_aluguel) * 100
-        st.success(f"🏆 COMPRAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ COMPRAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/rendimento_compra) * 100
-        st.info(f"🏆 ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Aluguel Final 
 st.subheader("Valor Final do Imóvel e Aluguel Esperado (Mês 420)")
@@ -197,10 +197,10 @@ with col11:
 with col12:
     diff = rendimento_aluguel - rendimento_compra - ultimo_aluguel
     if diff < 0:
-        st.success(f"A diferença de rendimentos não paga o aluguel e falta R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ A diferença de rendimentos para ALUGAR não paga o aluguel e falta R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/rendimento_compra) * 100
-        st.info(f"A diferença de rendimentos paga o aluguel e sobra R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ A diferença de rendimentos para ALUGAR paga o aluguel e sobra R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.divider()
 
