@@ -188,7 +188,7 @@ col0 = st.columns(1)
 
 with col10:
     ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
-    st.metric("Aluguel Esperado:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    st.metric("Aluguel Esperado:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.divider()
 
