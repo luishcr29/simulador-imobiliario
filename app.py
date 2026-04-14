@@ -107,6 +107,8 @@ df_resultados, pat_compra, pat_aluguel, val_imovel, cx_compra, cx_aluguel = calc
 )
 
 # --- INTERFACE DE RESULTADOS ---
+
+# Patrimônio
 st.subheader("Balanço Patrimonial Final (Mês 420)")
 col1, col2, col3 = st.columns(3)
 
@@ -132,26 +134,45 @@ with col3:
 if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
 
-# st.divider()
+# Pagamento Total
+st.subheader("Total de Pagamento Realizado (Mês 420)")
+col4, col5, col6 = st.columns(3)
+
+with col4:
+    pag_total_compra = df_resultados['Parcela Financiamento (R$)'].sum()
+    st.metric("Pagamento Total: COMPRA", f"R$ {pag_total_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col5:
+    pag_total_aluguel = df_resultados['Aluguel (R$)'].sum()
+    st.metric("Pagamento Total: ALUGUEL", f"R$ {pag_total_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col6:
+    diff = pag_total_aluguel - pag_total_compra
+    if diff > 0:
+        perc = (abs(diff)/pag_total_aluguel) * 100
+        st.success(f"🏆 COMPRAR pagou menos R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+    else:
+        perc = (abs(diff)/pag_total_compra) * 100
+        st.info(f"🏆 ALUGAR pagou menos R$ {abs(diff):,.2f} (+{perc:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
-col4, col5, col6, col7 = st.columns(4)
+col7, col8, col9, col10 = st.columns(4)
 
 taxa_rendimento = 0.005
 
-with col4:
+with col7:
     rendimento_compra = (pat_compra - val_imovel) * taxa_rendimento
     st.metric("Rendimento Mensal: COMPRA", f"R$ {rendimento_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     
-with col5:
+with col8:
     rendimento_aluguel = pat_aluguel * taxa_rendimento
     st.metric("Rendimento Mensal: ALUGUEL", f"R$ {rendimento_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
-with col6:
+with col9:
     st.metric("Aluguel Esperado:", f"R$ {aluguel_atual:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
-with col7:
+with col10:
     diff = rendimento_compra - rendimento_aluguel
     if diff > 0:
         perc = (abs(diff)/rendimento_aluguel) * 100
