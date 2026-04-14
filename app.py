@@ -129,7 +129,7 @@ ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
 # --- INTERFACE DE RESULTADOS ---
 
 # Patrimônio
-st.subheader("Balanço Patrimonial Final (Mês 420)")
+st.subheader("Balanço Patrimonial Final ")
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -155,7 +155,7 @@ if cx_compra < 0 or cx_aluguel < 0:
     st.warning("Aviso: O orçamento configurado foi insuficiente para cobrir as despesas básicas em alguns períodos, gerando juros de dívida corrosivos. Ajuste o 'Orçamento inicial' na barra lateral.")
 
 # Pagamento Total
-st.subheader("Total de Pagamento Realizado (Mês 420)")
+st.subheader("Total de Pagamento Realizado ")
 col4, col5, col6 = st.columns(3)
 
 with col4:
@@ -174,7 +174,7 @@ with col6:
         st.info(f"✅ ALUGAR pagou R$ {abs(diff):,.2f} a menos (-{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Rendimento Mensal Final
-st.subheader("Rendimento Mensal Final (Mês 420)")
+st.subheader("Rendimento Mensal Final ")
 col7, col8, col9 = st.columns(3)
 
 with col7:
@@ -195,7 +195,7 @@ with col9:
         st.info(f"✅ ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Aluguel Final 
-st.subheader("Despesas do Imóvel e Aluguel Esperado (Mês 420)")
+st.subheader("Despesas do Imóvel e Aluguel Esperado ")
 col10, col11, col12 = st.columns(3)
 
 with col10:
