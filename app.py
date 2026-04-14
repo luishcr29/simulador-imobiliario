@@ -38,7 +38,6 @@ with st.sidebar.expander("5. Orçamento e Déficit", expanded=True):
 
 with st.sidebar.expander("6. Viver de Renda", expanded=True):
     tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal (% a.m.)", value=0.5, step=0.1) / 100
-    # tx_renda_passiva_am /= 100
 
 # --- MOTOR DE CÁLCULO ---
 @st.cache_data
@@ -196,11 +195,12 @@ with col9:
         st.info(f"✅ ALUGAR vence por R$ {abs(diff):,.2f} (+{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Aluguel Final 
-st.subheader("Valor Final do Imóvel e Aluguel Esperado (Mês 420)")
+st.subheader("Despesas do Imóvel e Aluguel Esperado (Mês 420)")
 col10, col11, col12 = st.columns(3)
 
 with col10:
-    st.metric("Valor do Imóvel:", f"R$ {val_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    custo_manut_compra = df['Manutenção Compra (R$)'].sum()
+    st.metric("IPTU + Condomínio:", f"R$ {custo_manut_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col11:
     st.metric("Aluguel:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
