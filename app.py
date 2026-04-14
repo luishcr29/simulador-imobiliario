@@ -138,7 +138,7 @@ with col22:
     st.metric("Apenas Investimentos")
 
 with col33:
-    st.metric("".replace(",", "X").replace(".", ",").replace("X", "."))
+    st.metric("", f"".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Patrimônio
 st.subheader("Balanço Patrimonial Final (Mês 420)")
