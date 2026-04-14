@@ -184,7 +184,7 @@ with col9:
 
 # Aluguel Final 
 st.subheader("Aluguel Esperado (Mês 420)")
-col0 = st.columns(1)
+col10 = st.columns(1)
 
 with col10:
     ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
