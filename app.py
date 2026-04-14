@@ -135,7 +135,7 @@ with col11:
     st.metric("Valor do Imóvel Corrijido (Mês 420)", f"R$ {val_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col22:
-    st.metric("Apenas Investimentos".replace(",", "X").replace(".", ",").replace("X", "."))
+    st.metric("Apenas Investimentos")
 
 with col33:
     st.metric("".replace(",", "X").replace(".", ",").replace("X", "."))
