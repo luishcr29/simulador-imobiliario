@@ -173,7 +173,8 @@ with col8:
     st.metric("Rendimento Mensal: ALUGUEL", f"R$ {rendimento_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col9:
-    st.metric("Aluguel Esperado:", f"R$ {aluguel_atual:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
+    st.metric("Aluguel Esperado:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col10:
     diff = rendimento_compra - rendimento_aluguel
