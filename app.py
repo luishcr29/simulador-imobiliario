@@ -128,6 +128,18 @@ ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
 
 # --- INTERFACE DE RESULTADOS ---
 
+st.subheader("")
+col11, col22, col33 = st.columns(3)
+
+with col1:
+    st.metric("Valor do Imóvel Corrijido (Mês 420)", f"R$ {val_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col2:
+    st.metric("Apenas Investimentos".replace(",", "X").replace(".", ",").replace("X", "."))
+
+with col3:
+    st.metric("".replace(",", "X").replace(".", ",").replace("X", "."))
+
 # Patrimônio
 st.subheader("Balanço Patrimonial Final (Mês 420)")
 col1, col2, col3 = st.columns(3)
