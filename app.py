@@ -199,11 +199,11 @@ st.subheader("Despesas do Imóvel e Aluguel Esperado (Mês 420)")
 col10, col11, col12 = st.columns(3)
 
 with col10:
-    custo_manut_compra = df_resultados['Manutenção Compra (R$)'].sum()
-    st.metric("IPTU + Condomínio:", f"R$ {custo_manut_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    ultimo_custo_manut = df_resultados['Manutenção Compra (R$)'].iloc[-1]
+    st.metric("IPTU + Condomínio Final:", f"R$ {ultimo_custo_manut:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col11:
-    st.metric("Aluguel:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    st.metric("Aluguel Final:", f"R$ {ultimo_aluguel:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col12:
     diff = rendimento_aluguel - rendimento_compra - ultimo_aluguel
