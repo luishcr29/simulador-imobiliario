@@ -208,7 +208,7 @@ st.divider()
 st.subheader("Evolução do Caixa / Investimentos Acumulados")
 st.markdown("Visualização da liquidez ao longo do tempo (desconsidera o valor do imóvel físico).")
 grafico_dados = df_resultados.set_index("Mês")[["Caixa Compra (R$)", "Caixa Aluguel (R$)"]]
-st.line_chart(grafico_dados, x='Meses', y='Patrimônio')
+st.line_chart(grafico_dados)
 
 st.divider()
 
