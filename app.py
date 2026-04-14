@@ -14,17 +14,17 @@ with st.sidebar.expander("1. Imóvel e Financiamento", expanded=True):
     entrada = st.number_input("Valor da entrada (R$)", value=126833.23, step=1000.0)
     prazo = st.number_input("Prazo (meses)", value=420, step=12)
     juros_aa = st.number_input("Taxa nominal financiamento (% a.a.)", value=8.16, step=0.1)
-    valorizacao_aa = st.number_input("Valorização anual imóvel (% a.a.)", value=6.0, step=0.5)
+    valorizacao_aa = st.number_input("Valorização anual imóvel (% a.a.)", value=8.0, step=0.5)
 
-with st.sidebar.expander("2. Seguros e Tarifas (Caixa)", expanded=False):
+with st.sidebar.expander("2. Seguros e Tarifas (Caixa)", expanded=True):
     mip_inicial = st.number_input("MIP na 1ª parcela (R$)", value=24.04, step=1.0)
     dfi_inicial = st.number_input("DFI na 1ª parcela (R$)", value=24.85, step=1.0)
     taxa_admin = st.number_input("Taxa de Administração (R$)", value=25.00, step=1.0)
 
 with st.sidebar.expander("3. Investimento e Aluguel", expanded=True):
-    rendimento_aa = st.number_input("Rendimento investimentos (% a.a.)", value=15.0, step=0.5)
+    rendimento_aa = st.number_input("Rendimento investimentos (% a.a.)", value=13.0, step=0.5)
     aluguel_inicial = st.number_input("Aluguel inicial (R$)", value=1800.0, step=100.0)
-    reajuste_aluguel_aa = st.number_input("Reajuste anual do aluguel (% a.a.)", value=6.0, step=0.5)
+    reajuste_aluguel_aa = st.number_input("Reajuste anual do aluguel (% a.a.)", value=7.0, step=0.5)
 
 with st.sidebar.expander("4. Orçamento e Déficit", expanded=True):
     orcamento_mensal = st.number_input("Orçamento fixo mensal inicial (R$)", value=3500.0, step=100.0)
@@ -34,7 +34,7 @@ with st.sidebar.expander("4. Orçamento e Déficit", expanded=True):
 with st.sidebar.expander("5. Custos de Manutenção (Compra)", expanded=True):
     iptu_anual_inicial = st.number_input("IPTU Anual (R$)", value=1200.0, step=100.0)
     condominio_inicial = st.number_input("Condomínio Mensal (R$)", value=400.0, step=50.0)
-    reajuste_despesas_aa = st.number_input("Reajuste anual das despesas (% a.a.)", value=5.0, step=0.5)
+    reajuste_despesas_aa = st.number_input("Reajuste anual das despesas (% a.a.)", value=3.0, step=0.5)
 
 with st.sidebar.expander("5. Viver de Renda", expanded=True):
     tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal (% a.m.)", value=0.5, step=0.1) / 100
