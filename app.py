@@ -199,7 +199,7 @@ st.subheader("Despesas do Imóvel e Aluguel Esperado (Mês 420)")
 col10, col11, col12 = st.columns(3)
 
 with col10:
-    custo_manut_compra = df['Manutenção Compra (R$)'].sum()
+    custo_manut_compra = df_resultados['Manutenção Compra (R$)'].sum()
     st.metric("IPTU + Condomínio:", f"R$ {custo_manut_compra:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 with col11:
