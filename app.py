@@ -31,16 +31,22 @@ with st.sidebar.expander("4. Orçamento e Déficit", expanded=True):
     reajuste_orcamento_aa = st.number_input("Reajuste anual do orçamento (% a.a.)", value=3.0, step=0.5)
     taxa_divida_aa = st.number_input("Taxa de dívida/Cheque Especial (% a.a.)", value=40.0, step=1.0)
 
+with st.sidebar.expander("5. Custos de Manutenção (Compra)", expanded=True):
+    iptu_anual_inicial = st.number_input("IPTU Anual (R$)", value=1200.0, step=100.0)
+    condominio_inicial = st.number_input("Condomínio Mensal (R$)", value=400.0, step=50.0)
+    reajuste_despesas_aa = st.number_input("Reajuste anual das despesas (% a.a.)", value=5.0, step=0.5)
+
 with st.sidebar.expander("5. Viver de Renda", expanded=True):
-    tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal (% a.m.)", value=0.5, step=0.1)
-    tx_renda_passiva_am /= 100
+    tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal (% a.m.)", value=0.5, step=0.1) / 100
+    # tx_renda_passiva_am /= 100
 
 # --- MOTOR DE CÁLCULO ---
 @st.cache_data
 def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa, 
                        mip_inicial, dfi_inicial, taxa_admin, 
                        rendimento_aa, aluguel_inicial, reajuste_aluguel_aa, 
-                       orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa):
+                       orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa,
+                       iptu_anual, condominio_mensal, reajuste_despesas):
     
     valor_financiado = valor_imovel - entrada
     taxa_mensal_fin = (juros_aa / 100) / 12
@@ -58,6 +64,8 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
     inv_aluguel = entrada 
     aluguel_atual = aluguel_inicial
     orc_atual = orcamento_mensal
+    iptu_mensal = iptu_anual / 12
+    cond_atual = condominio_mensal
     
     dados = []
 
@@ -65,16 +73,17 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
         if mes > 1 and (mes - 1) % 12 == 0:
             aluguel_atual *= (1 + taxa_reajuste_alug_aa)
             orc_atual *= (1 + taxa_reajuste_orc_aa)
+            iptu_mensal *= (1 + reajuste_despesas / 100)
+            cond_atual *= (1 + reajuste_despesas / 100)
 
         mip_atual = saldo_devedor * aliquota_mip
         seguros_totais = dfi_inicial + taxa_admin + mip_atual
-        juros_mes = saldo_devedor * taxa_mensal_fin
-        
-        parcela_mes = amortizacao + juros_mes + seguros_totais
-        
+        juros_mes = saldo_devedor * taxa_mensal_fin        
+        parcela_mes = amortizacao + juros_mes + seguros_totais        
         saldo_devedor = max(0, saldo_devedor - amortizacao)
+        custo_manut_compra = iptu_mensal + cond_atual
 
-        sobra_compra = orc_atual - parcela_mes
+        sobra_compra = orc_atual - parcela_mes - custo_manut_compra
         if inv_compra < 0:
             inv_compra = inv_compra * (1 + taxa_divida_am) + sobra_compra
         else:
@@ -90,6 +99,7 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
             "Mês": mes,
             "Orçamento (R$)": round(orc_atual, 2),
             "Parcela Financiamento (R$)": round(parcela_mes, 2),
+            "Manutenção Compra (R$)": round(custo_manut_compra, 2),
             "Aluguel (R$)": round(aluguel_atual, 2),
             "Caixa Compra (R$)": round(inv_compra, 2),
             "Caixa Aluguel (R$)": round(inv_aluguel, 2)
@@ -107,12 +117,13 @@ df_resultados, pat_compra, pat_aluguel, val_imovel, cx_compra, cx_aluguel = calc
     valor_imovel, entrada, prazo, juros_aa, valorizacao_aa, 
     mip_inicial, dfi_inicial, taxa_admin, 
     rendimento_aa, aluguel_inicial, reajuste_aluguel_aa, 
-    orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa
+    orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa,
+    iptu_anual_inicial, condominio_inicial, reajuste_despesas_aa
 )
 
 # Pagamento Total
 pag_total_aluguel = df_resultados['Aluguel (R$)'].sum()
-pag_total_compra = df_resultados['Parcela Financiamento (R$)'].sum()
+pag_total_compra = entrada + df_resultados['Parcela Financiamento (R$)'].sum() + df_resultados['Manutenção Compra (R$)'].sum()
 
 ultimo_aluguel = df_resultados['Aluguel (R$)'].iloc[-1]
 
@@ -158,10 +169,10 @@ with col6:
     diff = pag_total_aluguel - pag_total_compra
     if diff > 0:
         porcent = (abs(diff)/pag_total_aluguel) * 100
-        st.success(f"✅ COMPRAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ COMPRAR pagou R$ {abs(diff):,.2f} a menos (-{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/pag_total_compra) * 100
-        st.info(f"✅ ALUGAR pagou menos R$ {abs(diff):,.2f} ({porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ ALUGAR pagou R$ {abs(diff):,.2f} a menos (-{porcent:,.2f}%)".replace(",", "X").replace(".", ",").replace("X", "."))
 
 # Rendimento Mensal Final
 st.subheader("Rendimento Mensal Final (Mês 420)")
@@ -197,10 +208,10 @@ with col11:
 with col12:
     diff = rendimento_aluguel - rendimento_compra - ultimo_aluguel
     if diff < 0:
-        st.success(f"✅ A diferença de rendimentos para ALUGAR não paga o aluguel e falta R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.success(f"✅ ALUGAR não rende o suficiente para pagar o aluguel, faltando R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     else:
         porcent = (abs(diff)/rendimento_compra) * 100
-        st.info(f"✅ A diferença de rendimentos para ALUGAR paga o aluguel e sobra R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+        st.info(f"✅ ALUGAR rende o suficiente para pagar o aluguel, sobrando R$ {abs(diff):,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.divider()
 
