@@ -46,7 +46,7 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
                        mip_inicial, dfi_inicial, taxa_admin, 
                        rendimento_aa, aluguel_inicial, reajuste_aluguel_aa, 
                        orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa,
-                       iptu_anual, condominio_mensal, reajuste_despesas):
+                       iptu_anual, condominio_mensal, reajuste_despesas, prazo_extra):
     
     valor_financiado = valor_imovel - entrada
     taxa_mensal_fin = (juros_aa / 100) / 12
@@ -122,7 +122,7 @@ df_resultados, pat_compra, pat_aluguel, val_imovel, cx_compra, cx_aluguel = calc
     mip_inicial, dfi_inicial, taxa_admin, 
     rendimento_aa, aluguel_inicial, reajuste_aluguel_aa, 
     orcamento_mensal, reajuste_orcamento_aa, taxa_divida_aa,
-    iptu_anual_inicial, condominio_inicial, reajuste_despesas_aa
+    iptu_anual_inicial, condominio_inicial, reajuste_despesas_aa, prazo_extra
 )
 
 # Pagamento Total
