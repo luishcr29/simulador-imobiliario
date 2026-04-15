@@ -38,6 +38,7 @@ with st.sidebar.expander("5. Orçamento e Déficit", expanded=True):
 
 with st.sidebar.expander("6. Viver de Renda", expanded=True):
     tx_renda_passiva_am = st.number_input("Taxa de renda passiva mensal (% a.m.)", value=0.5, step=0.1) / 100
+    prazo_extra = st.number_input("Prazo extra além do prazo do financiamento para a simulação (em anos)", value=5, step=1)
 
 # --- MOTOR DE CÁLCULO ---
 @st.cache_data
@@ -68,7 +69,8 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
     
     dados = []
 
-    for mes in range(1, int(prazo) + 1):
+    # for mes in range(1, int(prazo) + 1):
+    for mes in range(1, int(prazo) + 1 + prazo_extra):
         if mes > 1 and (mes - 1) % 12 == 0:
             aluguel_atual *= (1 + taxa_reajuste_alug_aa)
             orc_atual *= (1 + taxa_reajuste_orc_aa)
@@ -81,6 +83,9 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
         parcela_mes = amortizacao + juros_mes + seguros_totais        
         saldo_devedor = max(0, saldo_devedor - amortizacao)
         custo_manut_compra = iptu_mensal + cond_atual
+
+        if(mes >= int(prazo)
+           parcela_mes = 0 # Necessário zerar todos os itens do financiamento para robustez (A FAZER)         
 
         sobra_compra = orc_atual - parcela_mes - custo_manut_compra
         if inv_compra < 0:
