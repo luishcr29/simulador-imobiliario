@@ -84,7 +84,7 @@ def calcular_simulacao(valor_imovel, entrada, prazo, juros_aa, valorizacao_aa,
         saldo_devedor = max(0, saldo_devedor - amortizacao)
         custo_manut_compra = iptu_mensal + cond_atual
 
-        if(mes >= int(prazo)
+        if(mes >= int(prazo))
            parcela_mes = 0 # Necessário zerar todos os itens do financiamento para robustez (A FAZER)         
 
         sobra_compra = orc_atual - parcela_mes - custo_manut_compra
